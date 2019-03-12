@@ -1,0 +1,28 @@
+cluster:
+  name: lazyants
+bootstrap:
+  mlockall: true
+gateway:
+  recover_after_nodes: 1
+  gateway.recover_after_time: 10m
+  gateway.expected_nodes: 2
+action:
+  disable_close_all_indices: true
+  disable_delete_all_indices: true
+  disable_shutdown: true
+indices:
+  recovery.max_bytes_per_sec: 100mb
+discovery:
+  zen:
+    minimum_master_nodes: 2
+#    ping:
+#      unicast:
+#        hosts: [ 'elasticsearch' ]
+path:
+  logs: /var/log/elasticsearch
+network:
+  host: ['0.0.0.0']
+node:
+  data: true
+  master: true
+  name: ${HOSTNAME}
