@@ -7,16 +7,7 @@ services:
       - cluster.name=docker-cluster
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms1024m -Xmx1024m"
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-      nofile:
-        soft: 65536
-        hard: 65536
     mem_limit: 2g
-    cap_add:
-      - IPC_LOCK
     volumes:
       - esdata1:/usr/share/elasticsearch/data
       - $PWD/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
@@ -24,6 +15,7 @@ services:
       - 9200:9200
     networks:
       - esnet
+    privileged: true
   elasticsearch2:
     image: elasticsearch:1.7.6
     environment:
@@ -31,22 +23,13 @@ services:
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms1024m -Xmx1024m"
       - "discovery.zen.ping.unicast.hosts=elasticsearch1"
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-      nofile:
-        soft: 65536
-        hard: 65536
     mem_limit: 2g
-    cap_add:
-      - IPC_LOCK
     volumes:
       - esdata2:/usr/share/elasticsearch/data
       - $PWD/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
     networks:
       - esnet
-
+    privileged: true
 volumes:
   esdata1:
     driver: local
